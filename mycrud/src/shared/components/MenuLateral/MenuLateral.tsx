@@ -6,21 +6,26 @@ import {
   useTheme,
   Divider,
   List,
-  Icon,
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  useMediaQuery,
 } from "@mui/material";
 import UserLogo from "./images/userLogo.png";
+import { Home } from "@mui/icons-material";
+import { useDrawerContext } from "../../contexts";
 
 interface IAppMenuLateral {
   children: React.ReactNode;
 }
 export const MenuLateral: React.FC<IAppMenuLateral> = ({ children }) => {
   const theme = useTheme();
+  const smDown = useMediaQuery(theme.breakpoints.down("sm"));
+  const {isDrawerOpen, toggleDrawerOpen } = useDrawerContext();
+  
   return (
     <>
-      <Drawer variant="permanent">
+      <Drawer open={isDrawerOpen} variant={smDown ? "temporary" : "permanent"} onClose={toggleDrawerOpen}>
         <Box
           width={theme.spacing(28)}
           height="100%"
@@ -46,7 +51,7 @@ export const MenuLateral: React.FC<IAppMenuLateral> = ({ children }) => {
             <List component="nav">
               <ListItemButton>
                 <ListItemIcon>
-                  <Icon>Menu</Icon>
+                  <Home/>
                 </ListItemIcon>
                 <ListItemText primary="Página inicial" />
               </ListItemButton>
@@ -55,7 +60,7 @@ export const MenuLateral: React.FC<IAppMenuLateral> = ({ children }) => {
         </Box>
       </Drawer>
 
-      <Box height="100vh" marginLeft={theme.spacing(28)}>
+      <Box height="100vh" marginLeft={smDown ? 0 : theme.spacing(28)}>
         {children}
       </Box>
     </>
